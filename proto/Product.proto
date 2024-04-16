@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package products;
+
+option java_multiple_files = true;
+option java_package = "protos";
+
+option go_package = "proto/products";
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+}
+
+message ProductReply { repeated Product product = 1; }

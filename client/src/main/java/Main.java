@@ -34,7 +34,7 @@ public class Main {
         List<Product> products = response.getProductList();
 
        products.forEach((e)->{
-           System.out.println(e.getDescription());
+           System.out.println(e.getName());
        });
 
 

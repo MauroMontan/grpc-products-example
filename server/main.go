@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	productsmod "grpc/client/products"
 	"grpc/client/proto/products"
 	"log"
 	"net"
@@ -15,19 +16,20 @@ type server struct {
 	products.UnimplementedProductServiceServer
 }
 
+var grpcProducList []*products.Product
+
 func (*server) GetProducts(ctx context.Context, req *emptypb.Empty) (*products.ProductReply, error) {
 
-	println("has been called")
-	productList := []*products.Product{{
-		Name:  "Pencil",
-		Price: 23.0,
-	}, {
-		Name:  "Pen",
-		Price: 12.0,
-	}}
+	if len(grpcProducList) == 0 {
+		productList := productsmod.GetProducts()
+
+		for _, product := range productList {
+			grpcProducList = append(grpcProducList, product.GrpcMapped())
+		}
+	}
 
 	res := &products.ProductReply{
-		Product: productList,
+		Product: grpcProducList,
 	}
 
 	return res, nil
